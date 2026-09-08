@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Super-Resolution</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1>AI Image Super-Resolution</h1>
+                <span class="subtitle">Deep-learning-based image enhancement and upscaling.</span>
+            </div>
+            <div class="header-right">
+                <div class="model-badge">Scale: 4×</div>
+                <div class="model-badge">Architecture: RRDBNet</div>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <div class="main-layout">
+            
+            <!-- LEFT SIDEBAR: Upload & Tools -->
+            <aside class="sidebar-left">
+                
+                <!-- UPLOAD SECTION -->
+                <div class="panel" id="upload-panel">
+                    <h2>Workspace</h2>
+                    <div class="upload-zone" id="lr-drop-zone">
+                        <span class="upload-icon">⇪</span>
+                        <p>Drop Image Here</p>
+                        <small>PNG / JPG / JPEG</small>
+                        <input type="file" id="lr-file-input" accept=".png,.jpg,.jpeg">
+                    </div>
+
+                    <div class="action-bar">
+                        <button id="start-btn" class="primary-btn" disabled>Start Super-Resolution</button>
+                    </div>
+                </div>
+
+                <!-- PROCESSING STATE -->
+                <div class="panel hidden" id="processing-panel">
+                    <h2>Processing Status</h2>
+                    <div class="status-steps">
+                        <div class="step" id="step-upload"><span class="indicator"></span> Analyzing Input</div>
+                        <div class="step" id="step-infer"><span class="indicator"></span> Running Super-Resolution</div>
+                        <div class="step" id="step-output"><span class="indicator"></span> Generating Result</div>
+                    </div>
+                </div>
+
+                <!-- DATA PANEL -->
+                <div class="panel hidden" id="metadata-panel">
+                    <h2>Image Statistics</h2>
+                    <div class="stats-table-wrapper">
+                        <table class="metadata-table">
+                            <tbody id="metadata-tbody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="action-bar">
+                        <button id="download-image-btn" class="secondary-btn">Download Super-Resolved Image</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- MAIN VIEW AREA -->
+            <main class="main-viewer" id="main-viewer">
+                <div id="stage-empty" class="stage-message">
+                    No image loaded.
+                </div>
+                
+                <div id="viewer-container" class="hidden">
+                    
+                    <div class="toolbar">
+                        <div class="toolbar-left">
+                            <div class="mode-toggles">
+                                <button class="mode-btn active" data-mode="side">SIDE BY SIDE</button>
+                                <button class="mode-btn" data-mode="split">SPLIT VIEW</button>
+                                <button class="mode-btn" data-mode="overlay">OVERLAY</button>
+                            </div>
+                        </div>
+                        <div class="toolbar-center">
+                            <span id="active-indicator" class="active-indicator hidden">ACTIVE: ORIGINAL</span>
+                        </div>
+                        <div class="toolbar-right">
+                            <label class="sync-toggle">
+                                <input type="checkbox" id="sync-checkbox" checked>
+                                <span>SYNC VIEW</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="workspace mode-side" id="workspace">
+                        
+                        <!-- Original Viewer -->
+                        <div class="viewer-pane" id="pane-original" data-target="original">
+                            <div class="viewer-label">ORIGINAL</div>
+                            <div class="canvas-container" id="container-original">
+                                <img id="img-original" class="viewer-img" alt="Original">
+                            </div>
+                        </div>
+
+                        <!-- Divider for Split View -->
+                        <div id="split-divider" class="split-divider hidden">
+                            <div class="split-handle"></div>
+                        </div>
+
+                        <!-- SR Viewer -->
+                        <div class="viewer-pane" id="pane-sr" data-target="sr">
+                            <div class="viewer-label">SUPER-RESOLVED</div>
+                            <div class="canvas-container" id="container-sr">
+                                <img id="img-sr" class="viewer-img" alt="Super-Resolved">
+                            </div>
+                        </div>
+                        
+                        <!-- Opacity Slider for Overlay Mode -->
+                        <div id="overlay-controls" class="overlay-controls hidden">
+                            <span>Opacity:</span>
+                            <input type="range" id="opacity-slider" min="0" max="1" step="0.01" value="0.5">
+                        </div>
+                    </div>
+
+                    <div class="bottom-controls">
+                        <div class="control-group">
+                            <button class="ctrl-btn" id="ctrl-zoom-out" title="Zoom Out">−</button>
+                            <span class="zoom-level" id="zoom-level-text">100%</span>
+                            <button class="ctrl-btn" id="ctrl-zoom-in" title="Zoom In">+</button>
+                        </div>
+                        <div class="control-group">
+                            <button class="ctrl-btn text-btn" id="ctrl-fit">FIT</button>
+                            <button class="ctrl-btn text-btn" id="ctrl-1to1">1:1</button>
+                            <button class="ctrl-btn text-btn" id="ctrl-reset">RESET</button>
+                            <button class="ctrl-btn text-btn" id="ctrl-fullscreen">FULLSCREEN</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
