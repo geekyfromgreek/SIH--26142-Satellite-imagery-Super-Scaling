@@ -54,7 +54,7 @@ Our solution evolved through deliberate, incremental iterations:
 | Training data | Sentinel-2 L2A tiles — **~1% of the available corpus** |
 | Normalization | Float32 division by `3000.0` (unclamped, preserves reflectance) |
 | Upsampling | Dual PixelShuffle(2) → 4× spatial expansion |
-| **PSNR** | **35.40 dB** |
+| **PSNR** | **32.62 dB** |
 | **SSIM** | **0.8731** |
 | Output resolution | **2.5m effective** (input: 10m Sentinel-2) |
 
