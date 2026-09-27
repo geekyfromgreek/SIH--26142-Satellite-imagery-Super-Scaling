@@ -133,7 +133,7 @@ Evaluated against a held-out Sentinel-2 HR reference (4-band, spatially register
 
 | Metric | Value | Interpretation |
 |---|---|---|
-| **PSNR** | **35.40 dB** | High-quality reconstruction; >30 dB is the standard threshold |
+| **PSNR** | **32.62 dB** | High-quality reconstruction; >30 dB is the standard threshold |
 | **SSIM** | **0.8731** | Strong structural preservation; >0.85 is considered excellent |
 | **Output Resolution** | **2.5 m** | Problem required 4m — we exceeded it |
 | **Training Data Used** | **~1% of corpus** | Strong data efficiency; major headroom for V3 |
